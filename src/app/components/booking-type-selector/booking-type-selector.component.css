@@ -1,0 +1,22 @@
+.booking-type-card {
+    margin-left: 10px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+.booking-type-card.selected {
+    border-color: #252f60;
+    border-width: 2px;
+}
+
+.booking-type-card.selected .card-body {
+    background-color: #dfedf9;
+}
+
+.booking-type-card .card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

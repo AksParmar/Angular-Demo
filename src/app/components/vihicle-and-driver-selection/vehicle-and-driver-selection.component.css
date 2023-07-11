@@ -1,0 +1,52 @@
+.step-list {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.step-list::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 75px;
+    right: 50px;
+    height: 1px;
+    z-index: 2;
+    top: 22px;
+    background: #d3d3d3;
+}
+.step-list li {
+    text-align: center;
+    position: relative;
+    font-weight: 500;
+    font-size: 13px;
+    z-index: 3;
+
+}
+.step-list li span {
+    display: block;
+    margin-bottom: 10px;
+
+}
+
+.step-list li .number {
+    border: 1px solid #d3d3d3;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #fff;
+    width: 50px;
+    border-radius: 50px;
+}
+
+.step-list li.prev .number {
+    border: 2px solid #339933;
+}
+
+.step-list li.current .number {
+    border: 2px solid #0f9999;
+}

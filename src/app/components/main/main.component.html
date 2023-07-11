@@ -1,0 +1,27 @@
+<main class="app mt-5">
+    <div class="container">
+      <app-scope-package *ngIf="currentStep == 1" (onMoveNextStep)="onMoveBasicInfoStep($event)" (showAppLoader)="showLoader()" (hideAppLoader)="hideLoader()"></app-scope-package>
+      <app-basic-info  (onMoveNextStep)="onMoveVehicleAndDriverSection($event)" (showAppLoader)="showLoader()" (hideAppLoader)="hideLoader()" *ngIf="currentStep == 2" [scopePackageId]="scopePackageId"></app-basic-info>
+      <app-vehicle-and-driver-selection *ngIf="currentStep == 3"></app-vehicle-and-driver-selection>
+    </div>
+  
+  
+  
+    <div class="position-fixed top-0 end-0 mt-3 me-3">
+      <div class="toast d-inline-block text-white" [ngClass]="toast.type" *ngIf="toast.show" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto">Fulcrum</strong>
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
+        </div>
+        <div class="toast-body">
+          {{toast.message}}
+        </div>
+      </div>
+    </div>
+  
+    <div class="loader" *ngIf="loader">
+      <img src="/assets/loader.svg" alt="image" class="img-fluid" width="200px">
+    </div>
+    
+  </main>

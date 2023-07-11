@@ -1,0 +1,17 @@
+<h3 class="mb-5">Booking Wizard - Collection/Delivery</h3>
+
+<div class="card">
+    <div class="card-header px-5">
+        <h5 class="card-title">{{title}}</h5>
+    </div>
+    <div class="card-body px-5">
+        <label for="input" class="mb-3">{{inputElement['label']}}</label>
+        <select type="text" class="form-control" [ngClass]="inputSelectedValue ? 'is-valid': ''" [(ngModel)]="inputSelectedValue" [name]="inputElement.name" [id]="inputElement.id">
+            <option value="">{{inputElement['label']}}</option>
+            <option [value]="option['id']" *ngFor="let option of inputElement.options">{{option['name']}}</option>
+        </select>
+    </div>
+    <div class="card-footer text-center">
+        <button class="btn btn-primary btn-sm" (click)="onSubmitScopeForm()" [disabled]="!inputSelectedValue" >Continue</button>
+    </div>
+</div>
