@@ -32,7 +32,7 @@ export class MainComponent {
 
   onMoveVehicleAndDriverSection(data:any) {
     setTimeout(() => {
-      this.router.navigate(['booking_steps', data.booking_data_id]);
+      this.router.navigate(['booking/wizard/booking_steps', data.booking_data_id]);
     }, 3000);
 
   }

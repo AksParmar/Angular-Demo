@@ -1,4 +1,3 @@
-<label for="" class="mb-2">Select a Booking Type</label>
 <div class="card p-1 d-flex flex-row">
     <div class="card booking-type-card" [ngClass]="bookingType['id'] == value ? 'selected': ''" *ngFor="let bookingType of bookingTypesOptions">
         <div class="card-body" (click)="onSelectBookingType(bookingType['id'])">

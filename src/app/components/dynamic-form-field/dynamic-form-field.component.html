@@ -1,0 +1,13 @@
+<div class="mb-4">
+    <label for="{{input.label}}" class="mb-2">{{input.label}}</label>
+    
+    <div [ngSwitch]="this.input.type">
+        <input type="text" *ngSwitchCase="'text'" [formControl]="formControl" class="form-control" [id]="input.id" [ngClass]="checkValidation(formControl)"/>
+    
+        <select *ngSwitchCase="'select'" class="form-control" [id]="input.id" [formControl]="formControl" [ngClass]="checkValidation(formControl)">
+            <option value="">{{formField.input.label}}</option>
+            <option [value]="option.id" *ngFor="let option of input.options">{{option.name}}</option>
+        </select>
+    
+    </div>
+</div>

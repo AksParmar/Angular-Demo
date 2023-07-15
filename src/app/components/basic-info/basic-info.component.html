@@ -1,44 +1,49 @@
 <div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Basic Information</h5>
-    </div>
-    <div class="card-body px-5">
-        <div>
-            <label for="" class="mb-2">{{formElements['scope-package-id'].input.label}}</label>
-            <select class="form-control" [formControl]="formControls['scope-package-id']"
-                [ngClass]="formControls['scope-package-id'].invalid && (formControls['scope-package-id'].dirty || formControls['scope-package-id'].touched) ? 'is-invalid': 'is-valid'">
-                <option value="">{{formElements['scope-package-id'].input.label}}</option>
-                <option [value]="option['id']" *ngFor="let option of formElements['scope-package-id'].input.options">
-                    {{option['name']}}</option>
-            </select>
+    <form [formGroup]="basicForm" (ngSubmit)="onSubmitBasicForm()">
+        <div class="card-header px-5">
+            <h5 class="card-title">{{title}}</h5>
         </div>
+        <div class="card-body px-5">
 
-        <div class="mt-4">
-            <app-booking-type-selector [formControl]="formControls['booking-type-id']"
-                [bookingTypesOptions]="formElements['booking-type-id'].input.options"></app-booking-type-selector>
+            <div class="mb-4" *ngFor="let formField of formFieldElements">
+                <div *ngIf="formField.input.hidden == false">
+                    <label for="{{formField.input.label}}" class="mb-2">{{formField.input.label}}</label>
+
+                    <div [ngSwitch]="formField.input.type">
+                        <input type="text" *ngSwitchCase="'text'" [formControlName]="formField.input.name"
+                            class="form-control" [id]="formField.input.id"
+                            [ngClass]="checkValidation(this.basicForm.controls[formField.input.name])" />
+
+
+                        <div *ngSwitchCase="'select'">
+                            <app-booking-type-selector *ngIf="formField.input.name == 'booking_type_id'"
+                                [formControlName]="formField.input.name"
+                                [bookingTypesOptions]="formField.input.options"></app-booking-type-selector>
+
+                            <select *ngIf="formField.input.name != 'booking_type_id'" class="form-control"
+                                [id]="formField.input.id" [formControlName]="formField.input.name"
+                                [ngClass]="checkValidation(this.basicForm.controls[formField.input.name])">
+                                <option value="">{{formField.input.label}}</option>
+                                <option [value]="option.id" *ngFor="let option of formField.input.options">
+                                    {{option.name}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <input type="checkbox" *ngSwitchCase="'checkbox'" [formControlName]="formField.input.name"
+                            [id]="formField.input.id"
+                            [ngClass]="checkValidation(this.basicForm.controls[formField.input.name])" />
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- <app-dynamic-form-field *ngFor="let formField of formFieldElements" [formField]="formField"
+                [formControlName]="formField.input.name"></app-dynamic-form-field> -->
         </div>
-
-        <div class="mt-4">
-            <label for="" class="mb-2">{{formElements['delivery-or-collection'].input.label}}</label>
-            <select class="form-control" [formControl]="formControls['delivery-or-collection']"
-                [ngClass]="formControls['delivery-or-collection'].invalid && (formControls['delivery-or-collection'].dirty || formControls['delivery-or-collection'].touched) ? 'is-invalid': '' + formControls['delivery-or-collection'].valid && (formControls['delivery-or-collection'].dirty || formControls['delivery-or-collection'].touched) ? 'is-valid': ''">
-                <option [value]="formElements['delivery-or-collection'].input.options.Delivery">{{formElements['delivery-or-collection'].input.options.Delivery}}</option>
-                <option [value]="formElements['delivery-or-collection'].input.options.Collection">{{formElements['delivery-or-collection'].input.options.Collection}}</option>
-            </select>
+        <div class="card-footer text-center">
+            <button class="btn btn-primary btn-sm" type="submit" [disabled]="!basicForm.valid">Continue</button>
         </div>
-
-        <div class="mt-4">
-            <label class="mb-2" for="">{{formElements['contact-name'].input.label}}</label>
-            <input type="text" class="form-control" [formControl]="formControls['contact-name']" [ngClass]="formControls['contact-name'].invalid && (formControls['contact-name'].dirty || formControls['contact-name'].touched) ? 'is-invalid': '' + formControls['contact-name'].valid && (formControls['contact-name'].dirty || formControls['contact-name'].touched) ? 'is-valid': ''">
-        </div>
-
-        <div class="mt-4">
-            <label class="mb-2" for="">{{formElements['contact-mobile-number'].input.label}}</label>
-            <input type="text" class="form-control" [formControl]="formControls['contact-mobile-number']" [ngClass]="formControls['contact-mobile-number'].invalid && (formControls['contact-mobile-number'].dirty || formControls['contact-mobile-number'].touched) ? 'is-invalid': '' + formControls['contact-mobile-number'].valid && (formControls['contact-mobile-number'].dirty || formControls['contact-mobile-number'].touched) ? 'is-valid': ''">
-        </div>
-    </div>
-
-    <div class="card-footer text-center">
-        <button class="btn btn-primary btn-sm" (click)="onSubmitBasicInfoForm()" [disabled]="formControls['scope-package-id'].invalid || formControls['delivery-or-collection'].invalid || formControls['contact-name'].invalid || formControls['contact-mobile-number'].invalid || formControls['booking-type-id'].invalid">Continue</button>
-    </div>
+    </form>
 </div>

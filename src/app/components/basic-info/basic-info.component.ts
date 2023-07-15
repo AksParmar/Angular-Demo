@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -11,43 +11,62 @@ import { ApiService } from 'src/app/services/api.service';
 export class BasicInfoComponent implements OnInit {
   @Input() scopePackageId: number = 0;
   @Output() onMoveNextStep = new EventEmitter<any>();
-  @Output() showAppLoader = new EventEmitter();
-  @Output() hideAppLoader = new EventEmitter();
-
-  formElements: any = {};
-  formControls: any = {};
+  title = '';
+  basicForm: FormGroup;
+  formFieldElements: any[] = [];
 
   constructor(private apiService: ApiService, private router: Router) {
-
+    this.basicForm = new FormGroup({});
   }
 
   ngOnInit(): void {
-    this.showLoader();
     this.apiService.getBasicInfoData("", this.scopePackageId.toString()).subscribe((response: any) => {
-      response.data.form_field_config.elements.map((element: any) => {
-        this.formControls[element.name] = new FormControl(element.input.value, Validators.required);
-        this.formElements[element.name] = element;
-        this.hideLoader();
-      })
+      this.title = response.data.steps_summary.currentStep.name || '';
+      response.data.form_field_config.elements.forEach((element: any) => {
+        if (!(element.input.name == 'zone_id' || element.input.name == 'geo_coordinates' || element.input.name == 'delivery_or_collection')) {
+          this.formFieldElements.push(element);
+        }
+      });
+
+      this.generateForm(this.formFieldElements);
     })
   }
 
-  onSubmitBasicInfoForm() {
-    let payload = {
-      booking_id: null,
-      booking_type_id: this.formControls['booking-type-id'].value,
-      contact_mobile_number: this.formControls['contact-mobile-number'].value,
-      contact_name: this.formControls['contact-name'].value,
-      delivery_or_collection: this.formControls['delivery-or-collection'].value,
-      geo_coordinates: null,
-      is_recurring: null,
-      scope_package_id: this.scopePackageId,
-      submit_button: "next",
-      zone_id: null
+  generateForm(formFieldElements: any) {
+    let formControls: any = {}
+
+    formFieldElements.forEach((element: any) => {
+      formControls[element.input.name] = new FormControl(element.input.value)
+
+      if (element.input.required) {
+        formControls[element.input.name].setValidators([Validators.required]);
+      }
+
+      if (element.input.value) {
+        formControls[element.input.name].setValue(element.input.value);
+      }
+    });
+
+    this.basicForm = new FormGroup(formControls);
+  }
+
+  checkValidation(formControl: any) {
+    if (formControl.valid) {
+      return 'is-valid';
     }
-    this.showLoader();
+
+    if (formControl.invalid && (formControl.dirty || formControl.touched)) {
+      return 'is-invalid';
+    }
+
+    return '';
+  }
+
+  onSubmitBasicForm() {
+
+   let payload = this.basicForm.value;
+
     this.apiService.postBasicInfoData(payload).subscribe((response: any) => {
-      this.hideLoader();
       if (response.data.form_status == 1 && response.data.moving_direction == "NEXT") {
         let dataToSend = {
           message: response.message,
@@ -60,12 +79,5 @@ export class BasicInfoComponent implements OnInit {
 
   }
 
-  showLoader() {
-    this.showAppLoader.emit();
-  }
-
-  hideLoader() {
-    this.hideAppLoader.emit();
-  }
 
 }

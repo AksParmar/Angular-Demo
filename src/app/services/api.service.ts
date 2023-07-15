@@ -39,7 +39,7 @@ export class ApiService {
   }
 
   postBasicInfoData(payload: any) {
-    let endPoint = 'basic_info';
+    let endPoint = 'booking/wizard/basic_info';
     return this.sendPostReq(endPoint, payload);
   }
 }
