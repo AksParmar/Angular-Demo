@@ -8,12 +8,25 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   const isAuthenticated = authService.isLoggedIn();
+
   
-  if (isAuthenticated) {
-    return true;
+  if (state.url == '/') {
+    
+    if (!isAuthenticated) {
+      return true;
+    }
+    router.navigate(['booking/wizard'])
+    return false;
+
+  } else {
+
+    if (isAuthenticated) {
+      return true;
+    }
+    router.navigate([''])
+    return false;
   }
 
-  router.navigate([''])
-  return false;
+
 
 };

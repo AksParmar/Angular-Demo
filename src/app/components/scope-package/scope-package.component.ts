@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { RestClientService } from 'src/app/services/rest.client.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-scope-package',
@@ -11,7 +11,7 @@ export class ScopePackageComponent implements OnInit {
   @Output() onMoveNextStep = new EventEmitter<any>();
   @Output() showAppLoader = new EventEmitter();
   @Output() hideAppLoader = new EventEmitter();
-  restClient: RestClientService = inject(RestClientService);
+  apiService: ApiService = inject(ApiService);
 
   title = '';
   inputElement: any;
@@ -23,7 +23,7 @@ export class ScopePackageComponent implements OnInit {
 
   ngOnInit(): void {
     this.showLoader();
-    this.restClient.getScopePackageData().subscribe((response: any) => {
+    this.apiService.getScopePackageData().subscribe((response: any) => {
       this.title = response.data.steps_summary.currentStep.name || '';
       this.inputElement = response.data.form_field_config.elements[0].input;
       this.hideLoader();
@@ -36,7 +36,7 @@ export class ScopePackageComponent implements OnInit {
     };
     
     
-    this.restClient.postScopePackageData(payload).subscribe((response: any) => {
+    this.apiService.postScopePackageData(payload).subscribe((response: any) => {
       this.showLoader();
       if (response.data.form_status == 1 && response.data.moving_direction == "NEXT") {
         let dataToSend = {

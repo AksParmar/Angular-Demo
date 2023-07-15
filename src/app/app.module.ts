@@ -15,6 +15,7 @@ import { MainComponent } from './components/main/main.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { LoginComponent } from './components/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
+import { HeaderComponent } from './components/header/header.component';
 
 const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -29,7 +30,8 @@ const httpInterceptorProviders = [
     BookingTypeSelectorComponent,
     VehicleAndDriverSelectionComponent,
     MainComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

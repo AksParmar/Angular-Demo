@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 <main class="app mt-5">
     <div class="container">
       <app-scope-package *ngIf="currentStep == 1" (onMoveNextStep)="onMoveBasicInfoStep($event)" (showAppLoader)="showLoader()" (hideAppLoader)="hideLoader()"></app-scope-package>

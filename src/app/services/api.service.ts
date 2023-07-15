@@ -7,21 +7,20 @@ import { catchError } from 'rxjs';
   providedIn: 'root'
 })
 
-export class RestClientService {
+export class ApiService {
 
-  private readonly apiUrl: string = environment.apiUrl;
   private readonly bookingURL = environment.apiUrl + 'booking/wizard/';
-  private readonly auth_token: string = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JldGEtYi53ai1mdWxjcnVtLmNvLnVrL2FwaXYxL2xvZ2luIiwiaWF0IjoxNjg5MTY4NDU2LCJleHAiOjE2ODk0Mjc2NTYsIm5iZiI6MTY4OTE2ODQ1NiwianRpIjoibWFrRnFob1Y3UTVOWnJlWiIsInN1YiI6IjEyMDQ5IiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.2vxiSC3zXkZP12eXdZ1hVdQhHSlB_DgTs9jYawOMEwE';
-  private readonly headers = new HttpHeaders().set('Authorization', `Bearer ${this.auth_token}`);
+  // private readonly auth_token: string = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JldGEtYi53ai1mdWxjcnVtLmNvLnVrL2FwaXYxL2xvZ2luIiwiaWF0IjoxNjg5MTY4NDU2LCJleHAiOjE2ODk0Mjc2NTYsIm5iZiI6MTY4OTE2ODQ1NiwianRpIjoibWFrRnFob1Y3UTVOWnJlWiIsInN1YiI6IjEyMDQ5IiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.2vxiSC3zXkZP12eXdZ1hVdQhHSlB_DgTs9jYawOMEwE';
+  // private readonly headers = new HttpHeaders().set('Authorization', `Bearer ${this.auth_token}`);
 
   private http: HttpClient = inject(HttpClient);
 
   private sendGetReq(endPoint: string) {
-    return this.http.get(this.apiUrl + endPoint, { headers: this.headers }).pipe(catchError(this.handleError));
+    return this.http.get(endPoint);
   }
 
   private sendPostReq(endPoint: string, payload: any) {
-    return this.http.post(this.apiUrl + endPoint, payload, { headers: this.headers });
+    return this.http.post(endPoint, payload);
   }
 
   getScopePackageData() {
@@ -42,9 +41,5 @@ export class RestClientService {
   postBasicInfoData(payload: any) {
     let endPoint = 'basic_info';
     return this.sendPostReq(endPoint, payload);
-  }
-
-  handleError():any {
-
   }
 }

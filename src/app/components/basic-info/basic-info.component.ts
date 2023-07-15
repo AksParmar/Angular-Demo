@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RestClientService } from 'src/app/services/rest.client.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-basic-info',
@@ -17,13 +17,13 @@ export class BasicInfoComponent implements OnInit {
   formElements: any = {};
   formControls: any = {};
 
-  constructor(private restClient: RestClientService, private router: Router) {
+  constructor(private apiService: ApiService, private router: Router) {
 
   }
 
   ngOnInit(): void {
     this.showLoader();
-    this.restClient.getBasicInfoData("", this.scopePackageId.toString()).subscribe((response: any) => {
+    this.apiService.getBasicInfoData("", this.scopePackageId.toString()).subscribe((response: any) => {
       response.data.form_field_config.elements.map((element: any) => {
         this.formControls[element.name] = new FormControl(element.input.value, Validators.required);
         this.formElements[element.name] = element;
@@ -46,7 +46,7 @@ export class BasicInfoComponent implements OnInit {
       zone_id: null
     }
     this.showLoader();
-    this.restClient.postBasicInfoData(payload).subscribe((response: any) => {
+    this.apiService.postBasicInfoData(payload).subscribe((response: any) => {
       this.hideLoader();
       if (response.data.form_status == 1 && response.data.moving_direction == "NEXT") {
         let dataToSend = {

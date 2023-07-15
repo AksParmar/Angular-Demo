@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.development';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 @Injectable({
@@ -16,8 +15,7 @@ export class AuthService {
   }
 
   login(email: any, password: any) {
-    let url = environment.apiUrl;
-    this.http.post(url + 'login', { email: email, password: password }).subscribe(response => this.setSession(response))
+    this.http.post('login', { email: email, password: password }).subscribe(response => this.setSession(response))
   }
 
   logout() {
