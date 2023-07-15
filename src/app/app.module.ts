@@ -5,13 +5,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BasicInfoComponent } from './components/basic-info/basic-info.component';
 import { ScopePackageComponent } from './components/scope-package/scope-package.component';
 import { BookingTypeSelectorComponent } from './components/booking-type-selector/booking-type-selector.component';
 import { VehicleAndDriverSelectionComponent } from './components/vihicle-and-driver-selection/vehicle-and-driver-selection.component';
 import { MainComponent } from './components/main/main.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { LoginComponent } from './components/login/login.component';
+import { ToastrModule } from 'ngx-toastr';
+
+const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+];
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +28,8 @@ import { MainComponent } from './components/main/main.component';
     ScopePackageComponent,
     BookingTypeSelectorComponent,
     VehicleAndDriverSelectionComponent,
-    MainComponent
+    MainComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +38,10 @@ import { MainComponent } from './components/main/main.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

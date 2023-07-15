@@ -32,11 +32,9 @@ export class BookingTypeSelectorComponent implements OnInit, ControlValueAccesso
     this.value = value;
   }
 
-
   registerOnChange(fn: number): void {
     this.onChange = fn;
   }
-
 
   registerOnTouched(fn: number): void {
     this.onTouched = fn;
@@ -52,10 +50,6 @@ export class BookingTypeSelectorComponent implements OnInit, ControlValueAccesso
   disabled = false;
 
   ngOnInit(): void {
-    console.log(this.bookingTypesOptions);
+    
   }
-
-
-
-
 }
